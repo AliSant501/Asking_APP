@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comentarios</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="comentarios.js" defer></script>
+    
+    <style>
+        .estrella {
+            font-size: 2rem;
+            color: gray;
+            cursor: pointer;
+        }
+        .estrella.seleccionada {
+            color: gold;
+        }
+        #comentarios-container {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Comentarios del juego</h1>
+    <form id="comentarioForm">
+        <input type="text" id="usuario" placeholder="Tu nombre" required><br>
+        <textarea id="opinion" placeholder="¿Qué te pareció el juego?" required></textarea><br>
+        <div id="estrellas">
+            <!-- estrellas -->
+            <span class="estrella" data-valor="1">★</span>
+            <span class="estrella" data-valor="2">★</span>
+            <span class="estrella" data-valor="3">★</span>
+            <span class="estrella" data-valor="4">★</span>
+            <span class="estrella" data-valor="5">★</span>
+        </div>
+        <input type="hidden" id="calificacion" value="0">
+        <button type="submit">Enviar</button>
+    </form>
+
+    <div id="comentarios-container">
+        <h2>Opiniones</h2>
+        <div id="lista-comentarios"></div>
+    </div>
+</body>
+</html>
