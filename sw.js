@@ -5,7 +5,7 @@ const ASSETS = [
     '/Asking_APP/style.css',
     '/Asking_APP/script.js',
     '/Asking_APP/manifest.json',
-    '/Asking_APP/app-debug',
+    '/Asking_APP/app-debug.apk',
     '/Asking_APP/click.mp3',
     '/Asking_APP/images/game-preview.jpg',
     '/Asking_APP/images/icon-192.png',
