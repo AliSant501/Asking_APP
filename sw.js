@@ -1,22 +1,24 @@
 const CACHE_NAME = 'game-cache-v1';
 const ASSETS = [
-    '/Asking_APP/',
-    '/Asking_APP/index.html',
-    '/Asking_APP/style.css',
-    '/Asking_APP/script.js',
-    '/Asking_APP/manifest.json',
-    '/Asking_APP/app-debug',
-    '/Asking_APP/click.mp3',
-    '/Asking_APP/images/game-preview.jpg',
-    '/Asking_APP/images/icon-192.png',
-    '/Asking_APP/images/icon-512.png'
+    './',
+    './index.html',
+    './style.css',
+    './script.js',
+    './manifest.json',
+    './app-debug',
+    './click.mp3',
+    './images/game-preview.jpg',
+    './images/icon-192.png',
+    './images/icon-512.png'
 ];
 
 // Instalar el Service Worker y cachear los archivos
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(ASSETS);
+            return cache.addAll(ASSETS).catch(error => {
+                console.error('Error cacheando archivos:', error);
+            });
         })
     );
 });
@@ -28,20 +30,11 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
             );
-        })
+        }).then(() => self.clients.claim()) // Toma control de las páginas abiertas
     );
 });
 
-
-// Interceptar peticiones y servir desde caché
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request).then(response => {
-            return response || fetch(event.request);
-        })
-    );
-});
-
+// Interceptar peticiones y servir desde caché o red
 self.addEventListener('fetch', (event) => {
     if (event.request.url.includes("firebaseio.com")) {
         event.respondWith(
