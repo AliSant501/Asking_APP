@@ -11,13 +11,12 @@ const ASSETS = [
     '/Asking_APP/images/icon-192.png',
     '/Asking_APP/images/icon-512.png'
 ];
+
 // Instalar el Service Worker y cachear los archivos
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(ASSETS).catch(error => {
-                console.error('Error cacheando archivos:', error);
-            });
+            return cache.addAll(ASSETS);
         })
     );
 });
@@ -29,11 +28,20 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
             );
-        }).then(() => self.clients.claim()) // Toma control de las páginas abiertas
+        })
     );
 });
 
-// Interceptar peticiones y servir desde caché o red
+
+// Interceptar peticiones y servir desde caché
+self.addEventListener('fetch', (event) => {
+    event.respondWith(
+        caches.match(event.request).then(response => {
+            return response || fetch(event.request);
+        })
+    );
+});
+
 self.addEventListener('fetch', (event) => {
     if (event.request.url.includes("firebaseio.com")) {
         event.respondWith(
@@ -49,5 +57,3 @@ self.addEventListener('fetch', (event) => {
         );
     }
 });
-
-
