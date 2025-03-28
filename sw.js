@@ -56,4 +56,26 @@ self.addEventListener('fetch', (event) => {
             caches.match(event.request).then(response => response || fetch(event.request))
         );
     }
+
+    self.addEventListener('fetch', (event) => {
+    if (event.request.url.endsWith('app-debug.apk')) {
+        event.respondWith(
+            caches.match(event.request).then((response) => {
+                // Si está en caché, devolverlo
+                if (response) {
+                    return response;
+                }
+                // Si no está en caché, intentar descargarlo
+                return fetch(event.request).then((networkResponse) => {
+                    // Guardar en la caché para futuras ocasiones
+                    return caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, networkResponse.clone());
+                        return networkResponse;
+                    });
+                });
+            })
+        );
+    }
+});
+
 });
