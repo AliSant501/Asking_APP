@@ -1,7 +1,7 @@
 {
     "name": "Mi Videojuego",
     "short_name": "Videojuego",
-    "start_url": "./index.html",
+    "start_url": "/Asking_APP/index.html",
     "display": "standalone",
     "background_color": "#121212",
     "theme_color": "#ff6600",
