@@ -1,6 +1,6 @@
 // Registrar el Service Worker
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/Asking_APP/sw.js')
+    navigator.serviceWorker.register('/Asking_APP/sw.js', { scope: '/Asking_APP/' })
         .then(reg => console.log('Service Worker registrado correctamente', reg))
         .catch(err => console.error('Error al registrar el Service Worker', err));
 }
