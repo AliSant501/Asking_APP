@@ -1,14 +1,15 @@
 const CACHE_NAME = 'game-cache-v1';
 const ASSETS = [
-    '/',
-    '/index.html',
-    '/style.css',
-    '/script.js',
-    '/manifest.json',
-    '/click.mp3',
-    '/images/game-preview.jpg',
-    '/images/icon-192.png',
-    '/images/icon-512.png'
+    './',
+    './index.html',
+    './style.css',
+    './script.js',
+    './manifest.json',
+    './app-debug',
+    './click.mp3',
+    './images/game-preview.jpg',
+    './images/icon-192.png',
+    './images/icon-512.png'
 ];
 
 // Instalar el Service Worker y cachear los archivos
