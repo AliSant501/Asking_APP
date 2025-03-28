@@ -5,7 +5,7 @@ const ASSETS = [
     '/Asking_APP/style.css',
     '/Asking_APP/script.js',
     '/Asking_APP/manifest.json',
-    '/Asking_APP/app-debug',
+    '/Asking_APP/app-debug.apk',
     '/Asking_APP/click.mp3',
     '/Asking_APP/images/game-preview.jpg',
     '/Asking_APP/images/icon-192.png',
@@ -32,29 +32,21 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-
 // Interceptar peticiones y servir desde caché
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then(response => {
-            return response || fetch(event.request);
+            if (response) {
+                return response; // Si el recurso está en caché, devolverlo
+            }
+
+            return fetch(event.request).catch(() => {
+                // Si la solicitud falla y es el APK, devolverlo desde la caché
+                if (event.request.url.endsWith('.apk')) {
+                    return caches.match('/app-debug.apk');
+                }
+            });
         })
     );
 });
 
-self.addEventListener('fetch', (event) => {
-    if (event.request.url.includes("firebaseio.com")) {
-        event.respondWith(
-            fetch(event.request).catch(() => {
-                return new Response(JSON.stringify({ error: "No hay conexión a internet" }), {
-                    headers: { 'Content-Type': 'application/json' }
-                });
-            })
-        );
-    } else {
-        event.respondWith(
-            caches.match(event.request).then(response => response || fetch(event.request))
-        );
-    }
-
-});
